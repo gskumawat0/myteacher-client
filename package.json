@@ -21,5 +21,18 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gskumawat0/myteacher-client.git"
+  },
+  "author": "gouri shankar kumawat <gskumawat555@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gskumawat0/myteacher-client/issues"
+  },
+  "homepage": "https://github.com/gskumawat0/myteacher-client#readme"
 }

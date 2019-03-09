@@ -6,48 +6,50 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      questions: [],
-      errors: ['oops!! it is a error']
+      questions: ['what is your name?', 'what is your Father name?'],
+      error: 'this is a error'
     };
 
   }
 
   //add a error
-  addError = (err) => {
+  addError = (error) => {
     this.setState({
-      errors: [...this.state.errors, err]
+      error
     });
 
   }
 
   removeError = () => {
     this.setState({
-      errors: []
+      error: ''
     })
   }
 
+  handleNavClick = () => {
+    this.addError(`an error happened ${Math.floor(Math.random() * 20 + 1)}`);
+  }
 
 
   render() {
     // debugger
-    let { errors } = this.state;
-    let err = errors && errors.length > 0 && errors.map((error, i) => {
-      return <div className="alert alert-danger alert-dismissible fade show" key={i} role="alert">
+    let { error, questions } = this.state;
+    let err = error && error !== '' &&
+      <div className="alert alert-danger alert-dismissible fade show"  role="alert">
         {error}
         <button type="button" onClick = {this.removeError} className="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
 
-    })
     return (
       <div className="App">
-        <nav className="navbar navbar-expand-lg navbar-light bg-warning">
+        <nav className="navbar navbar-expand-lg navbar-light bg-warning" onClick={this.handleNavClick}>
           <span className="navbar-brand mb-0 ml-md-5 h1">Dashboard</span>
         </nav>
         <div className='container'>
           { err  }
-          <QuestionPaper />
+          <QuestionPaper  questions ={questions} />
         </div>
       </div>
     );

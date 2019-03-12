@@ -1,6 +1,6 @@
 import React from 'react';
 
-const QuestionSet = (props)=>{
+const QuestionSetInfo = (props) => {
     return (
         <table className="table table-hover">
           <thead className="thead-dark">
@@ -13,18 +13,18 @@ const QuestionSet = (props)=>{
             </tr>
           </thead>
           <tbody>
-          {props.questions.map((question,i)=>{
+          {props.questionSets.map((questionSet,i)=>{
              return <tr>
                 <th scope='row'> {i+1}</th>
-                <th><a href='/teachers/'>question.subject</a></th>
-                <th>question.standard</th>
-                <th>question.totalQuestions</th>
-                <th>question.totalMarks</th>
+                <th><a href='/teachers/{questionSet._id}'>questionSet.subject</a></th>
+                <th>questionSet.standard</th>
+                <th>questionSet.totalQuestions</th>
+                <th>questionSet.totalMarks</th>
               </tr>
           })}
           </tbody>
         </table>
-        )
+    )
 }
 
-export default QuestionSet
+export default QuestionSetInfo

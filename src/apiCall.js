@@ -4,9 +4,9 @@ export function apiCall(method, url, data) {
     console.log(method, url, data)
     debugger
     return new Promise((resolve, reject) => {
-        return axios[method]({
+        return axios({
+                method,
                 url,
-                params: { origin: "*" },
                 data
             })
             .then(res => {

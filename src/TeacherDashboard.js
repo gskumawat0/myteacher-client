@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './TeacherDashboard.css';
-import QuestionSet from './QuestionSet'
+import QuestionSetInfo from './QuestionSetInfo'
 import { apiCall } from './apiCall';
 
 class TeacherDashboard extends Component {
@@ -32,7 +32,7 @@ class TeacherDashboard extends Component {
                 this.setState({
                     isLoading: false
                 })
-                return this.props.addError(err.message)
+                return this.props.addError(err.message || err)
 
             });
     }
@@ -41,7 +41,7 @@ class TeacherDashboard extends Component {
     render() {
         let { isLoading, questionSets } = this.state;
         let dashboard = questionSets ? questionSets.length > 0 ?
-            <QuestionSet  questions={questionSets} /> :
+            <QuestionSetInfo  questionSets={questionSets} /> :
             <div className='bg-danger'>No question set found. please create one.</div> :
             null;
         return (

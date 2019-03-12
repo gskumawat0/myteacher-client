@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './QuestionPaper.css';
-import QuestionForm from './QuestionForm';
+
+import AddQuestionForm from './AddQuestionForm';
 
 class QuestionPaper extends Component {
     // constructor(props) {
@@ -11,8 +12,8 @@ class QuestionPaper extends Component {
         let questionList = questions.map((question, i) => {
             return <li key={i}> {question}</li>
         })
-        return <div>
-            <QuestionForm />
+        return <div className='mt-2'>
+            <AddQuestionForm />
             <ol>
                 {questionList}
             </ol>

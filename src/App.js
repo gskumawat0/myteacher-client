@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import './App.css';
+import { Route, Switch } from 'react-router-dom'
 import QuestionPaper from './QuestionPaper.js';
+import TeacherDashboard from './TeacherDashboard'
+import QuestionSetForm from './QuestionSetForm'
+
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       questions: ['what is your name?', 'what is your Father name?'],
-      error: 'this is a error'
+      error: '',
     };
 
   }
@@ -26,16 +30,11 @@ class App extends Component {
     })
   }
 
-  handleNavClick = () => {
-    this.addError(`an error happened ${Math.floor(Math.random() * 20 + 1)}`);
-  }
-
-
   render() {
     // debugger
     let { error, questions } = this.state;
     let err = error && error !== '' &&
-      <div className="alert alert-danger alert-dismissible fade show"  role="alert">
+      <div className="alert mb-0 alert-danger alert-dismissible fade show"  role="alert">
         {error}
         <button type="button" onClick = {this.removeError} className="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -44,12 +43,28 @@ class App extends Component {
 
     return (
       <div className="App">
-        <nav className="navbar navbar-expand-lg navbar-light bg-warning" onClick={this.handleNavClick}>
-          <span className="navbar-brand mb-0 ml-md-5 h1">Dashboard</span>
+        <nav className="navbar navbar-expand-lg navbar-light bg-warning">
+          <span className="navbar-brand mb-0 ml-md-5 h1">MyTeacher</span>
+          <div className="collapse navbar-collapse">
+            <ul className="navbar-nav ml-auto">
+              <li className="nav-item ">
+                {/*<p className=' mr-md-5 mb-0' >{navItem} </p> */}
+              </li>
+            </ul>
+          </div>
         </nav>
         <div className='container'>
           { err  }
-          <QuestionPaper  questions ={questions} />
+        </div>
+        <div className='container mt-2'>
+            <Switch>
+              <Route exact path='/teachers/' render={ props => <TeacherDashboard addError={this.addError}/>} />
+              <Route exact path='/teachers/newquestionset' render={props=><QuestionSetForm {...props} addError={this.addError} /> } />
+              <Route exact path='/questions' render={props => {
+                return (
+                <QuestionPaper {...props} questions={questions} />)}} 
+            />
+            </Switch>
         </div>
       </div>
     );

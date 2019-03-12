@@ -1,52 +1,52 @@
 import React, { Component } from 'react';
-import './TeacherDashboard.css';
-import QuestionSetInfo from './QuestionSetInfo'
+import QuestionPaperInfo from './QuestionPaperInfo'
 import { apiCall } from './apiCall';
+import { Link } from 'react-router-dom';
+
 
 class TeacherDashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isLoading: true,
-            questionSets: ''
+            questionPapers: ''
         };
     }
     componentDidMount() {
-        apiCall('get', `${process.env.REACT_APP_BASE_URL}/api/questionset`, undefined)
-            // apiCall('get', `https://randomuser.me/api/`, undefined)
+        this.props.removeError();
+        apiCall('get', `${process.env.REACT_APP_BASE_URL}/api/questionpapers`, undefined) //fetch all question set
             .then(data => {
-                console.log(data);
                 if (!data.success) {
                     throw Error(data.message);
                 }
                 else {
                     this.setState({
                         isLoading: false,
-                        questionSets: data.questionSets
+                        questionPapers: data.questionPapers
                     })
                 }
             })
             .catch(err => {
                 debugger
-                console.log(err);
                 this.setState({
                     isLoading: false
                 })
-                return this.props.addError(err.message || err)
+                return this.props.addError(err.message || 'an error occured while processing your request. please try again later.')
 
             });
     }
 
 
     render() {
-        let { isLoading, questionSets } = this.state;
-        let dashboard = questionSets ? questionSets.length > 0 ?
-            <QuestionSetInfo  questionSets={questionSets} /> :
+        let { isLoading, questionPapers } = this.state;
+        let dashboard = questionPapers ? questionPapers.length > 0 ?
+            <QuestionPaperInfo  questionPapers={questionPapers} /> :
             <div className='bg-danger'>No question set found. please create one.</div> :
             null;
         return (
             <div className='mt-2'>
                 {isLoading ? <p className='h1'>Loading......</p> : dashboard}
+                <Link to='/teachers/newquestionpaper' className='btn btn-warning'>Add a new Question paper</Link>
             </div>
         )
     }

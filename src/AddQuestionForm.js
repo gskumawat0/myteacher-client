@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import './AddQuestionForm.css';
-// import ReactDOM from 'react-dom';
 
 class AddQuestionForm extends Component {
-  render() {
-    return (
-      <div>
+    render() {
+        return (
+            <div>
         <button className="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
             Add a Question
         </button>
@@ -41,8 +39,8 @@ class AddQuestionForm extends Component {
           </form>
         </div>
     </div>
-    )
-  }
+        )
+    }
 }
 
 

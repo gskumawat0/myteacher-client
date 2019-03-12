@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
-import './App.css';
 import { Route, Switch } from 'react-router-dom'
 import QuestionPaper from './QuestionPaper.js';
 import TeacherDashboard from './TeacherDashboard'
-import QuestionSetForm from './QuestionSetForm'
+import NewQuestionPaper from './NewQuestionPaper'
 import Homepage from './Homepage';
+
+const Nav = () => {
+    return (
+        <nav className="navbar navbar-expand-lg navbar-light bg-warning">
+          <span className="navbar-brand mb-0 ml-md-5 h1">MyTeacher</span>
+        </nav>
+    )
+}
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            questions: ['what is your name?', 'what is your Father name?'],
             error: '',
         };
 
@@ -43,31 +49,22 @@ class App extends Component {
 
         return (
             <div className="App">
-        <nav className="navbar navbar-expand-lg navbar-light bg-warning">
-          <span className="navbar-brand mb-0 ml-md-5 h1">MyTeacher</span>
-          <div className="collapse navbar-collapse">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item ">
-                {/*<p className=' mr-md-5 mb-0' >{navItem} </p> */}
-              </li>
-            </ul>
-          </div>
-        </nav>
-        <div className='container'>
-          { err  }
-        </div>
-        <div className='container mt-2'>
-            <Switch>
-            <Route exact path='/' component={Homepage} />
-              <Route exact path='/teachers/' render={ props => <TeacherDashboard addError={this.addError}/>} />
-              <Route exact path='/teachers/newquestionset' render={props=><QuestionSetForm {...props} addError={this.addError} /> } />
-              <Route  path='/teachers/:questionSetId' render={props => {
-                return (
-                <QuestionPaper {...props} addError={this.addError} />)}} 
-            />
-            </Switch>
-        </div>
-      </div>
+                <Nav />
+                <div className='container'>
+                  { err  }
+                </div>
+                <div className='container mt-2'>
+                    <Switch>
+                        <Route exact path='/' component={Homepage} />
+                        <Route exact path='/teachers/' render={ props => <TeacherDashboard addError={this.addError} removeError={this.removeError}/>} />
+                        <Route exact path='/teachers/newquestionpaper' render={props=><NewQuestionPaper {...props} addError={this.addError} removeError={this.removeError} /> } />
+                        <Route  path='/teachers/:questionPaperId' render={props =>
+                             <QuestionPaper {...props} addError={this.addError} removeError={this.removeError}/>
+                          } 
+                        />
+                    </Switch>
+                </div>
+              </div>
         );
     }
 }

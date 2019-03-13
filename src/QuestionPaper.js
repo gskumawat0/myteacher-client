@@ -41,20 +41,23 @@ class QuestionPaper extends Component {
 
     handleChange = (e) => {
         console.clear()
+
         this.setState({
             [e.target.name]: e.target.value
         }, () => console.log(this.state))
     }
 
     handleResponseSubmit = (e) => {
+        e.preventDefault();
+        this.props.removeError();
         this.setState({
             isSubmitting: true
         })
 
-        apiCall('post', `${process.env.REACT_APP_BASE_URL}/responses`, { ...this.state })
+        apiCall('post', `${process.env.REACT_APP_BASE_URL}/api/responses`, { ...this.state })
             .then(data => {
                 if (!data.success) {
-                    throw Error(data.message);
+                    this.props.addError(`successfully submitted your responses. you'll receive performance sheet shortly`);
                 }
                 else {
                     this.setState({

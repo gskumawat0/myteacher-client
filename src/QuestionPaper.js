@@ -57,7 +57,7 @@ class QuestionPaper extends Component {
         apiCall('post', `${process.env.REACT_APP_BASE_URL}/api/responses`, { ...this.state })
             .then(data => {
                 if (!data.success) {
-                    this.props.addError(`successfully submitted your responses. you'll receive performance sheet shortly`);
+                    throw Error(data.message);
                 }
                 else {
                     this.setState({
@@ -65,6 +65,8 @@ class QuestionPaper extends Component {
                         isSubmitting: false,
                     })
                     this.props.addError(`successfully submitted your responses. you'll receive performance sheet shortly`);
+                    this.props.history.push('/teachers/');
+
                 }
             })
             .catch(err => {

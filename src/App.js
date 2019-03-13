@@ -41,11 +41,11 @@ class App extends Component {
         let { error } = this.state;
         let err = error && error !== '' &&
             <div className="alert mb-0 alert-danger alert-dismissible fade show"  role="alert">
-        {error}
-        <button type="button" onClick = {this.removeError} className="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+                {error}
+                <button type="button" onClick = {this.removeError} className="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
         return (
             <div className="App">

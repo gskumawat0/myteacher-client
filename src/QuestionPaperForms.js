@@ -1,9 +1,9 @@
 import React from 'react';
 
 const QuestionPaperInfoForm = (props) => {
-	let { totalQuestions, totalMarks } = props;
-	return (
-		<form onSubmit={props.handleQuestionPaperSubmit} method='post'>
+    let { totalQuestions, totalMarks } = props;
+    return (
+        <form onSubmit={props.handleQuestionPaperSubmit} method='post'>
               <div className="form-group">
                 <label htmlFor="standard">Standard:</label>
                 <select onChange={props.handleChange} name='standard' id='standard' className='form-control' required>
@@ -36,15 +36,15 @@ const QuestionPaperInfoForm = (props) => {
               </div>
               <button type="submit" className="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Submit after adding all questions">Submit Question Paper</button>
             </form>
-	)
+    )
 }
 
 const QuestionsForm = (props) => {
-	let { totalQuestions, questions } = props;
-	let { question, option1, option2, option3, option4, option5, option6 } = props;
-	let { answer1, answer2, answer3, answer4 } = props;
+    let { totalQuestions, questions } = props;
+    let { question, option1, option2, option3, option4, option5, option6 } = props;
+    let { answer1, answer2, answer3, answer4 } = props;
 
-	return <form onSubmit={props.handleQuestionSubmit} method='post'>
+    return <form onSubmit={props.handleQuestionSubmit} method='post'>
               <p className='float-right'>Questions remaining: {totalQuestions - questions.length} </p>    
               <p className='mb-0 ml-md-2'>Select answer type:</p>
                 <div className="form-check ml-md-4">
@@ -61,13 +61,13 @@ const QuestionsForm = (props) => {
                   <label className="" htmlFor="question">
                     Question:
                   </label>
-                  <input type='text' name='question' id='question' value={question} onChange={props.handleChange} placeholder='question'    className='form-control' required/>
+                  <input type='text' name='question' id='question' value={question} onChange={props.handleChange} placeholder='question' className='form-control' required/>
                 </div>
                 <div className='form-group' id='options'>
                   <p className='mb-0 ml-md-2'>Options:</p>
-                    <input type='text' name='option1' value={option1}  onChange={props.handleChange} placeholder='option 1'  className='form-control  my-1' required/> 
-                    <input type='text' name='option2' value={option2} onChange={props.handleChange} placeholder='option 2'  className='form-control  my-1' required/> 
-                    <input type='text' name='option3' value={option3} onChange={props.handleChange} placeholder='option 3'  className='form-control  my-1' required/> 
+                    <input type='text' name='option1' value={option1} onChange={props.handleChange} placeholder='option 1' className='form-control  my-1' required/> 
+                    <input type='text' name='option2' value={option2} onChange={props.handleChange} placeholder='option 2' className='form-control  my-1' required/> 
+                    <input type='text' name='option3' value={option3} onChange={props.handleChange} placeholder='option 3' className='form-control  my-1' required/> 
                     <input type='text' name='option4' value={option4} onChange={props.handleChange} placeholder='option 4' className='form-control  my-1' required/> 
                     <input type='text' name='option5' value={option5} onChange={props.handleChange} placeholder='option 5(optional)' className='form-control  my-1'/> 
                     <input type='text' name='option6' value={option6} onChange={props.handleChange} placeholder='option 6(optional)' className='form-control  my-1'/> 

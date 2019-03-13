@@ -21,6 +21,7 @@ const initialState = {
     answer2: '',
     answer3: '',
     answer4: '',
+    isSubmitting: false
 }
 class NewQuestionPaper extends Component {
     constructor(props) {
@@ -41,14 +42,14 @@ class NewQuestionPaper extends Component {
         let { question, answerType, option1, option2, option3, option4, option5, option6 } = this.state;
         let { answer1, answer2, answer3, answer4 } = this.state;
         let answers = [answer1, answer2, answer3, answer4].filter((ans) => ans !== ''); //remove empty answers
-        let options = [option1, option2, option3, option4, option5, option6].filter((opt) => opt !== ''); //remove empty options
+        let options = [option1.trim(), option2.trim(), option3.trim(), option4.trim(), option5.trim(), option6.trim()].filter((opt) => opt !== ''); //remove empty options
 
         if (answerType === 'single' && answers.length > 1) {
             this.props.addError('please enter only one answer for single answer type question.')
             return false;
         }
-        if (!answers.every((ans) => options.includes(ans))) { // all answers must match from options
-            this.props.addError('all answers must match from options');
+        if (!answers.every((ans) => options.includes(ans.trim()))) { // all answers must match from options
+            this.props.addError('options must include all answers');
             return false;
         }
 
@@ -72,6 +73,7 @@ class NewQuestionPaper extends Component {
     handleQuestionPaperSubmit = (e) => {
         e.preventDefault();
         this.props.removeError();
+
         let { standard, subject, totalMarks, totalQuestions, questions } = this.state;
 
         //all questions are not submiited
@@ -79,6 +81,10 @@ class NewQuestionPaper extends Component {
             this.props.addError(`please add remaining ${totalQuestions - questions.length} questions`);
             return false;
         }
+
+        this.setState({
+            isSubmitting: true
+        })
 
         //update totalQuestion if it is less than total question submitted 
         if (totalQuestions > questions.length + 1) {
@@ -93,7 +99,11 @@ class NewQuestionPaper extends Component {
                 this.props.history.push(`/teachers`);
             })
             .catch(err => {
-                return this.props.addError(err.message || 'an error occured while processing your request. please try after some time.');
+                this.setState({
+                    isSubmitting: false
+                })
+                this.props.addError(err.message || 'an error occured while processing your request. please try after some time.');
+                return false;
             });
     }
     componentDidMount() {
@@ -102,9 +112,9 @@ class NewQuestionPaper extends Component {
 
 
     render() {
-        return (
+        return (!(this.state.isSubmitting) ?
             <div className='mt-4'>
-                <h1 className='text-center mb-4'>Add New Question Paper </h1>
+                <h1 className='text-center mb-4' > Add New Question Paper </h1>
                 <div className='row'>
                     <div className='col-md-8 mx-auto'>
                         <QuestionPaperInfoForm {...this.state} handleQuestionPaperSubmit={this.handleQuestionPaperSubmit} handleChange={this.handleChange}  />
@@ -112,8 +122,9 @@ class NewQuestionPaper extends Component {
                         <h2 className='text-center my-2'>Add Question:</h2>
                         <QuestionsForm {...this.state} handleQuestionSubmit={this.handleQuestionSubmit} handleChange={this.handleChange}/>
                     </div>
-                </div>
-            </div>
+                </div> 
+            </div> :
+            <p className='h2'>Submitting</p>
         )
     }
 }

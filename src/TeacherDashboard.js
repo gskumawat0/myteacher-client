@@ -36,12 +36,31 @@ class TeacherDashboard extends Component {
             });
     }
 
+    DeleteQuestionPaper = (questionPaperId) => {
+        console.log(questionPaperId)
+        apiCall('delete', `${process.env.REACT_APP_BASE_URL}/api/questionpapers/${questionPaperId}`, undefined)
+            .then(data => {
+                if (!data.success) {
+                    throw Error(data.message);
+                }
+                else {
+                    this.setState({
+                        questionPapers: this.state.questionPapers.filter((questionPaper) => questionPaper._id !== questionPaperId)
+                    })
+                }
+            })
+            .catch(err => {
+                return this.props.addError(err.message || 'an error occured while processing your request. please try again later.')
+
+            });
+    }
+
 
     render() {
         let { isLoading, questionPapers } = this.state;
         let dashboard = questionPapers ? questionPapers.length > 0 ?
-            <QuestionPaperInfo  questionPapers={questionPapers} /> :
-            <div className='bg-danger'>No question set found. please create one.</div> :
+            <QuestionPaperInfo  questionPapers={questionPapers} DeleteQuestionPaper={this.DeleteQuestionPaper} /> :
+            <div className='bg-danger h2 p-1' >No question paper found. please create one.</div> :
             null;
         return (
             <div className='mt-2'>

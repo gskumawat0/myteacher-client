@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import QuestionPaperInfo from './QuestionPaperInfo'
-import { apiCall } from './apiCall';
+import { apiCall } from '../apiCall';
 import { Link } from 'react-router-dom';
 
 

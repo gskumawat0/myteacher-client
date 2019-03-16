@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { apiCall } from './apiCall';
+import { apiCall } from '../apiCall';
 import { QuestionsForm, QuestionPaperInfoForm } from './QuestionPaperForms'
 
 
@@ -86,7 +86,7 @@ class NewQuestionPaper extends Component {
             isSubmitting: true
         })
 
-        //update totalQuestion if it is less than total question submitted 
+        //update totalQuestion if it is less than total question submitted
         if (totalQuestions > questions.length + 1) {
             this.setState({
                 totalQuestions: questions.length + 1
@@ -122,7 +122,7 @@ class NewQuestionPaper extends Component {
                         <h2 className='text-center my-2'>Add Question:</h2>
                         <QuestionsForm {...this.state} handleQuestionSubmit={this.handleQuestionSubmit} handleChange={this.handleChange}/>
                     </div>
-                </div> 
+                </div>
             </div> :
             <p className='h2'>Submitting</p>
         )

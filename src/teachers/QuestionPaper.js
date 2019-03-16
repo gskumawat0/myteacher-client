@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { apiCall } from './apiCall';
+import { apiCall } from '../apiCall';
 import SingleQuestion from './SingleQuestion'
 import StudentInfoForm from './StudentInfoForm'
 
@@ -94,7 +94,7 @@ class QuestionPaper extends Component {
                 <p className='d-inline mx-5' >total marks: {questionPaper.totalMarks} </p>
                 <p className='float-right d-inline mx-5' >total questions: {questionPaper.totalQuestions}</p>
                 <hr className='mb-2'/>
-                
+
                 <form onSubmit={this.handleResponseSubmit} method='post'>
                     <ol>
                         <StudentInfoForm handleChange={this.handleChange}  studentName={studentName} enrollmentNo={enrollmentNo} contact={contact} />
@@ -103,7 +103,7 @@ class QuestionPaper extends Component {
                         {questionList}
                     </ol>
                     <button className='btn btn-primary mx-4 px-3' type='submit'> Submit</button>
-                </form>    
+                </form>
             </div>)
     }
 }

@@ -4,7 +4,7 @@ import QuestionPaper from './teachers/QuestionPaper.js';
 import TeacherDashboard from './teachers/TeacherDashboard'
 import NewQuestionPaper from './teachers/NewQuestionPaper'
 import Homepage from './Homepage';
-import AuthForm from './auth/AuthForm';
+import TeacherAuthForm from './auth/TeacherAuthForm';
 
 const Nav = () => {
     return (
@@ -31,15 +31,15 @@ class App extends Component {
         });
 
     }
-    addSuccess = (success)=>{
-      this.setState({
-        success
-      })
+    addSuccess = (success) => {
+        this.setState({
+            success
+        })
     }
-    removeSuccess = ()=>{
-      this.setState({
-        success: ''
-      })
+    removeSuccess = () => {
+        this.setState({
+            success: ''
+        })
     }
 
     removeError = () => {
@@ -60,7 +60,7 @@ class App extends Component {
             </div>
         let successmsg = success && success !== '' &&
             <div className="alert mb-0 alert-success alert-dismissible fade show"  role="alert">
-                {error}
+                {success}
                 <button type="button" onClick = {this.removeSuccess} className="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -76,8 +76,20 @@ class App extends Component {
                 <div className='container mt-2'>
                     <Switch>
                         <Route exact path='/' component={Homepage} />
-                        <Route exact path='/auth/signup' render={props =><AuthForm submitText='Sign up Now' headText="Sign up" type='signup' />}  />
-                        <Route exact path='/auth/signin' render={props =><AuthForm submitText='Login' headText="Welcome Back" type='signin' />} />
+                        <Route exact path='/auth/signup' render={props =><TeacherAuthForm 
+                            submitText='Sign up Now' 
+                            headText="Sign up" 
+                            type='signup' 
+                            addError={this.addError} removeError={this.removeError}
+                            addSuccess={this.addSuccess} removeSuccess={this.removeSuccess}
+                            />}  />
+                        <Route exact path='/auth/signin' render={props =><TeacherAuthForm 
+                            submitText='Login' 
+                            headText="Welcome Back" 
+                            type='signin' 
+                            addError={this.addError} removeError={this.removeError}
+                            addSuccess={this.addSuccess} removeSuccess={this.removeSuccess}
+                        />} />
                         <Route exact path='/teachers/' render={ props => <TeacherDashboard addError={this.addError} removeError={this.removeError}/>} />
                         <Route exact path='/teachers/newquestionpaper' render={props=><NewQuestionPaper {...props} addError={this.addError} removeError={this.removeError} /> } />
                         <Route  path='/teachers/:questionPaperId' render={props =>

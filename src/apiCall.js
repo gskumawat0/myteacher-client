@@ -1,16 +1,11 @@
 import axios from 'axios';
 
 export function apiCall(method, url, data) {
-  console.log(data)
     return new Promise((resolve, reject) => {
         return axios({
                 method,
                 url,
-                params: { origin: "*" },
-                headers: {
-                  "Content-Type": "application/json"
-              },
-                data
+                data,
             })
             .then(res => {
                 return resolve(res.data);

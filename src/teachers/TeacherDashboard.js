@@ -27,11 +27,10 @@ class TeacherDashboard extends Component {
                 }
             })
             .catch(err => {
-                debugger
                 this.setState({
                     isLoading: false
                 })
-                return this.props.addError(err.message || 'an error occured while processing your request. please try again later.')
+                return this.props.addError(err.message || 'something went wrong. please try again later.')
 
             });
     }
@@ -50,7 +49,7 @@ class TeacherDashboard extends Component {
                 }
             })
             .catch(err => {
-                return this.props.addError(err.message || 'an error occured while processing your request. please try again later.')
+                return this.props.addError(err.message || 'something went wrong. please try again later.')
 
             });
     }

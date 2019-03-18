@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { apiCall } from '../apiCall';
-import {withRouter} from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 class AuthForm extends Component {
     constructor(props) {
@@ -23,7 +23,6 @@ class AuthForm extends Component {
         apiCall('post', `${process.env.REACT_APP_BASE_URL}/api/auth/${this.props.type}`, { ...this.state })
             .then(({ token, user, success, message }) => {
                 if (!success) throw Error(message)
-                else this.props.addSuccess(message);
                 if (token) {
                     window.localStorage.setItem('jwtToken', token);
                     axios.defaults.headers.common["Authorization"] = `${token}`;
@@ -36,7 +35,7 @@ class AuthForm extends Component {
                     password: '',
                     profileType: 'student'
                 })
-                this.props.history.push(`/${user.profileType}s`);
+                this.props.type === 'signin' ? this.props.history.push(`/${user.profileType}s`) : this.props.addsuccess(message)
             })
             .catch(err => this.props.addError(err.message || `something went wrong. please try again later.`));
     }
@@ -67,6 +66,9 @@ class AuthForm extends Component {
                         </div>}
                         <button type="submit" className="btn btn-primary">{this.props.submitText}</button>
                     </form>
+                    <p className='mb-0'>{ this.props.type === 'signin' ? `Need an account? Sign Up<Link to='/auth/signup'> here</Link>`
+                        : `Already have a account. login<Link to='/auth/signin'> here</Link>`
+                    }</p>
                 </div>
             </div>
         )

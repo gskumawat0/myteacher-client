@@ -21,6 +21,8 @@ const initialState = {
     answer2: '',
     answer3: '',
     answer4: '',
+    assignedTo: '',
+    lastDate: '',
     isSubmitting: false
 }
 class NewQuestionPaper extends Component {
@@ -67,6 +69,7 @@ class NewQuestionPaper extends Component {
             subject: this.state.subject,
             totalMarks: this.state.totalMarks,
             totalQuestions: this.state.totalQuestions,
+            lastDate: this.state.lastDate
         })
     }
 
@@ -74,7 +77,7 @@ class NewQuestionPaper extends Component {
         e.preventDefault();
         this.props.removeError();
 
-        let { standard, subject, totalMarks, totalQuestions, questions } = this.state;
+        let { standard, subject, totalMarks, totalQuestions, questions, lastDate, assignedTo } = this.state;
 
         //all questions are not submiited
         if (questions.length < Number(totalQuestions)) {
@@ -93,7 +96,7 @@ class NewQuestionPaper extends Component {
             })
         }
 
-        apiCall('post', `${process.env.REACT_APP_BASE_URL}/api/questionpapers`, { standard, subject, totalMarks, totalQuestions, questions })
+        apiCall('post', `${process.env.REACT_APP_BASE_URL}/api/questionpapers`, { standard, subject, totalMarks, totalQuestions, questions,assignedTo, lastDate })
             .then(data => {
                 this.setState({ ...initialState })
                 this.props.history.push(`/teachers`);

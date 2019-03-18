@@ -1,29 +1,26 @@
 import React, { Component } from 'react';
+import { withRouter } from "react-router-dom"
 
-
-
-
-export default function withAuth(ComponentToBeRendered) {
+const withAuth = (ComponentToBeRendered)=>{
     class Authenticate extends Component {
         componentWillMount() {
-            if (!localStorage.jwtToken) {
-                this.props.removeError();
+            if (!window.localStorage.jwtToken) {
                 this.props.addError('please signin first.');
                 this.props.history.push('/auth/signin');
             }
         }
         componentWillUpdate(nextProps) {
-            if (!localStorage.jwtToken) {
-                this.props.removeError();
+            if (!window.localStorage.jwtToken) {
                 this.props.addError('please signin first.');
                 this.props.history.push('/auth/signin');
             }
         }
 
         render() {
-            return <ComponentToBeRendered { ...this.props }/>
+            return <ComponentToBeRendered removeError={this.props.removeError} addError={this.props.addError} />
         }
     }
-
-    return <Authenticate />
+    return withRouter(Authenticate)
 }
+
+export default withAuth;

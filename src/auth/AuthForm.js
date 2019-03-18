@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { apiCall } from '../apiCall';
+import {withRouter} from 'react-router-dom';
 
 class AuthForm extends Component {
     constructor(props) {
@@ -24,8 +25,8 @@ class AuthForm extends Component {
                 if (!success) throw Error(message)
                 else this.props.addSuccess(message);
                 if (token) {
-                    localStorage.setItem('jwtToken', token);
-                    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+                    window.localStorage.setItem('jwtToken', token);
+                    axios.defaults.headers.common["Authorization"] = `${token}`;
                 }
                 else {
                     delete axios.defaults.headers.common['Authorization'];
@@ -35,9 +36,9 @@ class AuthForm extends Component {
                     password: '',
                     profileType: 'student'
                 })
-
+                this.props.history.push(`/${user.profileType}s`);
             })
-            .catch(err => this.props.addError(err.message + Math.floor(Math.random() * 10) || err));
+            .catch(err => this.props.addError(err.message || `something went wrong. please try again later.`));
     }
 
     render() {
@@ -52,7 +53,7 @@ class AuthForm extends Component {
                             { this.props.type === 'signup' && <small id="emailHelp" className="form-text text-muted">{`We'll never share your email with anyone else.`}</small>}
                         </div>
                         <div className="form-group">
-                             <label htmlFor="password">Password</label>
+                            <label htmlFor="password">Password</label>
                             <input type="password"  name='password' onChange={this.handleChange} value={this.state.password} className="form-control" id="password" placeholder="Password" required/>
                         </div>
                         {this.props.type === 'signup' && <div className="form-group form-check px-0">
@@ -72,4 +73,4 @@ class AuthForm extends Component {
     }
 }
 
-export default AuthForm;
+export default withRouter(AuthForm);

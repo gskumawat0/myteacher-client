@@ -4,6 +4,9 @@ export function apiCall(method, url, data) {
     return new Promise((resolve, reject) => {
         return axios({
                 method,
+                headers: {
+                    Authorization: window.localStorage.jwtToken
+                },
                 url,
                 data,
             })

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const QuestionPaperInfoForm = (props) => {
-    let { totalQuestions, totalMarks } = props;
+    let { totalQuestions, totalMarks, lastDate, assignedTo } = props;
     return (
         <form onSubmit={props.handleQuestionPaperSubmit} method='post'>
               <div className="form-group">
@@ -19,11 +19,11 @@ const QuestionPaperInfoForm = (props) => {
                 <label htmlFor="subject" >Subject:</label>
                 <select onChange={props.handleChange} id='subject' name='subject' className='form-control' required>
                     <option value=''>choose a subject</option>
-                    <option value='english'>english</option>
-                    <option value='science'>science</option>
-                    <option value='geography'>geography</option>
-                    <option value='history'>history</option>
-                    <option value='sports'>sports</option>
+                    <option value='english'>English</option>
+                    <option value='science'>Science</option>
+                    <option value='geography'>Geography</option>
+                    <option value='history'>History</option>
+                    <option value='sports'>Sports</option>
                 </select>
               </div>
               <div className="form-group">
@@ -33,6 +33,14 @@ const QuestionPaperInfoForm = (props) => {
               <div className="form-group">
                 <label htmlFor="marks">Total questions:</label>
                 <input type="number" onChange={props.handleChange} value={totalQuestions} name='totalQuestions' className="form-control" id="marks" placeholder="total questions" required/>
+              </div>
+              <div className="form-group">
+                <label htmlFor="lastDate">Last date of submission:</label>
+                <input type="date" onChange={props.handleChange} value={lastDate} name='lastDate' className="form-control" id="lastDate" placeholder="last date of submission" required/>
+              </div>
+              <div className="form-group">
+                <label htmlFor="assignedTo">Assigned to:</label>
+                <input type="text" onChange={props.handleChange} value={assignedTo} name='assignedTo' className="form-control" id="assignedTo" placeholder="enter email of students with comma seperated. leave empty if assigned to whole class." />
               </div>
               <button type="submit" className="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Submit after adding all questions">Submit Question Paper</button>
             </form>

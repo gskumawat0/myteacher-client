@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import QuestionPaperInfo from './QuestionPaperInfo'
+import QuestionPapersTable from './QuestionPapersTable'
 import { apiCall } from '../apiCall';
 import { Link } from 'react-router-dom';
 
@@ -30,35 +30,32 @@ class TeacherDashboard extends Component {
                 this.setState({
                     isLoading: false
                 })
-                return this.props.addError(err.message || 'something went wrong. please try again later.')
-
+                this.props.addError(err.message || 'something went wrong. please try again later.')
             });
     }
 
-    DeleteQuestionPaper = (questionPaperId) => {
-        console.log(questionPaperId)
+    deleteQuestionPaper = (questionPaperId) => {
         apiCall('delete', `${process.env.REACT_APP_BASE_URL}/api/questionpapers/${questionPaperId}`, undefined)
-            .then(data => {
-                if (!data.success) {
-                    throw Error(data.message);
-                }
-                else {
-                    this.setState({
-                        questionPapers: this.state.questionPapers.filter((questionPaper) => questionPaper._id !== questionPaperId)
-                    })
-                }
-            })
-            .catch(err => {
-                return this.props.addError(err.message || 'something went wrong. please try again later.')
-
-            });
+        .then(data => {
+            if (!data.success) {
+                throw Error(data.message);
+            }
+            else {
+                this.setState({
+                    questionPapers: this.state.questionPapers.filter((questionPaper) => questionPaper._id !== questionPaperId)
+                })
+            }
+        })
+        .catch(err => {
+            this.props.addError(err.message || 'something went wrong. please try again later.')
+        });
     }
 
 
     render() {
         let { isLoading, questionPapers } = this.state;
         let dashboard = questionPapers ? questionPapers.length > 0 ?
-            <QuestionPaperInfo  questionPapers={questionPapers} DeleteQuestionPaper={this.DeleteQuestionPaper} /> :
+            <QuestionPapersTable  questionPapers={questionPapers} deleteQuestionPaper={this.deleteQuestionPaper} isStudent={false} /> :
             <div className='bg-danger h2 p-1' >No question paper found. please create one.</div> :
             null;
         return (

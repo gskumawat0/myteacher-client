@@ -66,8 +66,8 @@ class AuthForm extends Component {
                         </div>}
                         <button type="submit" className="btn btn-primary">{this.props.submitText}</button>
                     </form>
-                    <p className='mb-0'>{ this.props.type === 'signin' ? `Need an account? Sign Up<Link to='/auth/signup'> here</Link>`
-                        : `Already have a account. login<Link to='/auth/signin'> here</Link>`
+                    <p className='mb-0'>{ this.props.type === 'signin' ? <Link to='/auth/signup'>Need an account? Sign Up here </Link>
+                        : <Link to='/auth/signin'>Already have a account. login here</Link>
                     }</p>
                 </div>
             </div>

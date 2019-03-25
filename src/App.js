@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Link } from 'react-router-dom'
 
 import Homepage from './Homepage';
 import AuthForm from './auth/AuthForm';
 import withAuth from './hocs/WithAuth';
+import { apiCall } from './apiCall';
 
 //teacher component
 import QuestionPaper from './teachers/QuestionPaper.js';
@@ -16,8 +17,13 @@ import StudentResponseForm from './students/StudentResponseForm';
 
 const Nav = () => {
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-warning">
-            <span className="navbar-brand mb-0 ml-md-5 h1">MyTeacher</span>
+        <nav class="navbar navbar-expand-lg navbar-light bg-warning">
+          <Link className="navbar-brand mb-0 ml-md-5 h1" to='/'>MyTeacher</Link>
+            { window.localStorage.jwtToken && <ul className="navbar-nav ml-auto mb-0 mr-md-5">
+              <li className="nav-item active">
+                <p className="nav-link" onClick={this.props.onLogOut}>Logout</p>
+              </li>
+            </ul>}
         </nav>
     );
 };
@@ -44,7 +50,7 @@ class App extends Component {
             error: ''
         })
     }
-    
+
     //show success
     addSuccess = (success) => {
         this.setState({
@@ -55,6 +61,20 @@ class App extends Component {
         this.setState({
             success: ''
         })
+    }
+    onLogOut = (e) => {
+        e.preventDefault();
+        delete window.localStorage.jwtToken;
+        apiCall('get', `${process.env.REACT_APP_BASE_URL}/api/auth/logout`, undefined)
+            .then(data => {
+                if (!data.success) {
+                    this.addError(data.message);
+                }
+                else {
+                    this.addSuccess(data.message);
+                    this.props.history.push('/auth/signup');
+                }
+            })
     }
 
 
@@ -69,7 +89,7 @@ class App extends Component {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>;
-            
+
         let successmsg = success && success !== '' &&
             <div className="alert mb-0 alert-success alert-dismissible fade show"  role="alert">
                 {success}
@@ -80,7 +100,7 @@ class App extends Component {
 
         return (
             <div className="App">
-                <Nav />
+                <Nav onLogOut={this.onLogOut} />
                 <div className='container'>
                   { errmsg }
                   {successmsg}

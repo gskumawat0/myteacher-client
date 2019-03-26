@@ -26,7 +26,6 @@ class StudentResponseForm extends Component {
             currentQuestion: 1,
             answerType:'',
             selectedOptions:[],
-            lastDate: '',
             responses: {}
         };
     }

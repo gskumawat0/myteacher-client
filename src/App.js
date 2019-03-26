@@ -1,27 +1,28 @@
 import React, { Component } from 'react';
-import { Route, Switch, Link } from 'react-router-dom'
+import { Route, Switch, Link, withRouter } from 'react-router-dom'
 
 import Homepage from './Homepage';
 import AuthForm from './auth/AuthForm';
 import withAuth from './hocs/WithAuth';
-import { apiCall } from './apiCall';
+// import { apiCall } from './apiCall';
 
 //teacher component
 import QuestionPaper from './teachers/QuestionPaper.js';
-import TeacherDashboard from './teachers/TeacherDashboard'
-import NewQuestionPaper from './teachers/NewQuestionPaper'
+import TeacherDashboard from './teachers/TeacherDashboard';
+import NewQuestionPaper from './teachers/NewQuestionPaper';
+import StudentScoreBoard from './teachers/StudentScoreBoard';
 
 //student component
 import StudentDashboard from './students/StudentDashboard';
 import StudentResponseForm from './students/StudentResponseForm';
 
-const Nav = () => {
+const Nav = (props) => {
     return (
-        <nav class="navbar navbar-expand-lg navbar-light bg-warning">
+        <nav className="navbar navbar-expand-lg navbar-light bg-warning">
           <Link className="navbar-brand mb-0 ml-md-5 h1" to='/'>MyTeacher</Link>
             { window.localStorage.jwtToken && <ul className="navbar-nav ml-auto mb-0 mr-md-5">
               <li className="nav-item active">
-                <p className="nav-link" onClick={this.props.onLogOut}>Logout</p>
+                <p className="nav-link mb-0" onClick={props.onLogOut}>Logout</p>
               </li>
             </ul>}
         </nav>
@@ -65,16 +66,8 @@ class App extends Component {
     onLogOut = (e) => {
         e.preventDefault();
         delete window.localStorage.jwtToken;
-        apiCall('get', `${process.env.REACT_APP_BASE_URL}/api/auth/logout`, undefined)
-            .then(data => {
-                if (!data.success) {
-                    this.addError(data.message);
-                }
-                else {
-                    this.addSuccess(data.message);
-                    this.props.history.push('/auth/signup');
-                }
-            })
+        this.addSuccess('logout successful. please signin back to continue. ')
+        this.props.history.push('/auth/signin');
     }
 
 
@@ -124,12 +117,16 @@ class App extends Component {
                         />} />
                         <Route exact path='/teachers/' render={ props => <TeacherDashboard addError={this.addError} removeError={this.removeError}/>} />
                         <Route exact path='/teachers/newquestionpaper' render={props=><NewQuestionPaper {...props} addError={this.addError} removeError={this.removeError} /> } />
-                        <Route  path='/teachers/:questionPaperId' render={props =>
+                        <Route exact  path='/teachers/:questionPaperId' render={props =>
                              <QuestionPaper {...props} addError={this.addError} removeError={this.removeError}/>
                           }
                         />
+                        <Route exact path='/teachers/:questionPaperId/scores' render={props=>
+                            <StudentScoreBoard {...props} addError={this.addError} removeError={this.removeError}/>
+                        }  />
+                        
                         <Route exact path='/students' render={props=><StudentDashboard addError={this.addError} removeError={this.removeError} />} />
-                        <Route  path='/students/:questionPaperId' render={props =>
+                        <Route exact path='/students/:questionPaperId' render={props =>
                              <StudentResponseForm {...props} addError={this.addError} removeError={this.removeError}/>
                           }
                         />
@@ -140,4 +137,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default withRouter(App);

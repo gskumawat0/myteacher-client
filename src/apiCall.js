@@ -15,6 +15,11 @@ export function apiCall(method, url, data) {
             })
             .catch((err) => {
                 if (err.response) {
+                    if(err.response.status === 401){
+                        return reject({
+                            status: 401,
+                            message: 'please signin first.'})
+                    }
                     return reject(err.response.data);
                 }
                 else if (err.request) {

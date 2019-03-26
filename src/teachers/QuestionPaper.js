@@ -31,7 +31,7 @@ class QuestionPaper extends Component {
                 this.setState({
                     isLoading: false
                 })
-                this.props.addError(err.message || 'an error occured while processing your request. please try again later.')
+                this.props.addError(err.message || 'something went wrong. please try again later.')
 
             });
     }
@@ -73,8 +73,8 @@ class QuestionPaper extends Component {
     }
 
     render() {
-        let { questionPaper } = this.state;
-        let questionList = Object.keys(questionPaper).length > 0 ? questionPaper.questions.map((question, i) => {
+        let { questionPaper, isLoading } = this.state;
+        let questionList = !isLoading ? questionPaper.questions.map((question, i) => {
             return (
                 <li key={question._id || i}>
                     <SingleQuestion handleChange={this.handleChange} question={question} />

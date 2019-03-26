@@ -25,7 +25,7 @@ const QuestionPapersTable = (props) => {
                 <th>{questionPaper.totalQuestions}</th>
                 <th>{questionPaper.totalMarks}</th>
                 {props.isStudent=== false  
-                ?  <th className='text-danger' onClick={props.deleteQuestionPaper.bind(this,questionPaper._id )}>Delete</th>
+                ?  <th ><Link to={`/teachers/${questionPaper._id}`}>View QuestionPaper</Link> | <Link to={`/teachers/${questionPaper._id}/scores`}>Check Scores</Link> | <p className='text-danger mb-0' onClick={props.deleteQuestionPaper.bind(this,questionPaper._id )}>Delete</p></th>
                 : <th className='text-warning'> <Link to={`/students/${questionPaper._id}`}>Start</Link></th>}
               </tr>
           })}

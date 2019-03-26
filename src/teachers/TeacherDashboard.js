@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import QuestionPapersTable from './QuestionPapersTable'
 import { apiCall } from '../apiCall';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 
 class TeacherDashboard extends Component {
@@ -30,7 +30,8 @@ class TeacherDashboard extends Component {
                 this.setState({
                     isLoading: false
                 })
-                this.props.addError(err.message || 'something went wrong. please try again later.')
+                this.props.addError(err.message || 'something went wrong. please try again later.');
+                if(err.status === 401) this.props.history.push('/auth/signin');
             });
     }
 
@@ -54,17 +55,17 @@ class TeacherDashboard extends Component {
 
     render() {
         let { isLoading, questionPapers } = this.state;
-        let dashboard = questionPapers ? questionPapers.length > 0 ?
+        let dashboard = !isLoading ? questionPapers.length > 0 ?
             <QuestionPapersTable  questionPapers={questionPapers} deleteQuestionPaper={this.deleteQuestionPaper} isStudent={false} /> :
             <div className='bg-danger h2 p-1' >No question paper found. please create one.</div> :
-            null;
+            <h2>Loading....</h2>;
         return (
             <div className='mt-2'>
-                {isLoading ? <p className='h1'>Loading......</p> : dashboard}
+                {dashboard}
                 <Link to='/teachers/newquestionpaper' className='btn btn-warning'>Add a new Question paper</Link>
             </div>
         )
     }
 }
 
-export default TeacherDashboard;
+export default withRouter(TeacherDashboard);

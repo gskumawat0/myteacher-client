@@ -72,7 +72,7 @@ class NewQuestionPaper extends Component {
         this.props.removeError();
         let { question, answerType, answers, options } = this.state;
         answers = answers.map(answer => answer.trim());
-        options = options.trim(option => option.trim());
+        options = options.map(option => option.trim());
         if (options.length < 2) {
             this.props.addError('please provide at least 2 options.');
             return false;

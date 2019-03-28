@@ -4,54 +4,83 @@ import { QuestionsForm, QuestionPaperInfoForm } from './QuestionPaperForms'
 
 
 const initialState = {
-    standard: '',
-    subject: '',
-    totalMarks: 0,
-    totalQuestions: 0,
-    questions: [],
-    question: '',
-    answerType: 'single',
-    option1: '',
-    option2: '',
-    option3: '',
-    option4: '',
-    option5: '',
-    option6: '',
-    answer1: '',
-    answer2: '',
-    answer3: '',
-    answer4: '',
-    assignedTo: '',
-    lastDate: '',
-    isSubmitting: false
+    
 }
 class NewQuestionPaper extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ...initialState
+            isSubmitting: false,
+            standard: '',
+            subject: '',
+            totalMarks: 0,
+            totalQuestions: 0,
+            questions: [],
+            assignedTo: '',
+            lastDate: '',
+            question: '',
+            answerType: 'single',
+            options: [''],
+            answers: []
         }
     }
 
-    handleChange = (e) => {
+    handleOptionChange = (idx, e) => {
+        let newOptions = this.state.options;
+        newOptions[idx] = e.target.value
+        this.setState({
+            options: newOptions
+        });
+    }
+    
+    handleAnswerChange = (e) => {
+        let {answers} = this.state;
+        if(answers.includes(e.target.value)){ //remove pre selected answer
+            this.setState({
+                answers: answers.filter((answer)=> answer !== e.target.value)
+            })
+        }
+        else{
+            this.setState({ //add if not selected earlier
+                answers: [...answers, e.target.value]
+            });
+        }
+    }
+    
+    handleOptionAppend = (e)=>{
+        this.setState({
+            options: [...this.state.options, '']
+        })
+    }
+    
+    handleOptionRemove = (idx, e)=>{
+        let {options} = this.state;
+        if(options.length < 2) return false;
+        this.setState({
+            options: options.filter((option, i)=>i !== idx)
+        })
+    }
+    
+    handleChange = (e) =>{
         this.setState({
             [e.target.name]: e.target.value
-        });
+        })
     }
     handleQuestionSubmit = (e) => {
         e.preventDefault();
         this.props.removeError();
-        let { question, answerType, option1, option2, option3, option4, option5, option6 } = this.state;
-        let { answer1, answer2, answer3, answer4 } = this.state;
-        let answers = [answer1, answer2, answer3, answer4].filter((ans) => ans !== ''); //remove empty answers
-        let options = [option1.trim(), option2.trim(), option3.trim(), option4.trim(), option5.trim(), option6.trim()].filter((opt) => opt !== ''); //remove empty options
-
-        if (answerType === 'single' && answers.length > 1) {
-            this.props.addError('please enter only one answer for single answer type question.')
+        let { question, answerType, answers, options } = this.state;
+        if(options.length < 2){
+            this.props.addError('please provide at least 2 options.');
             return false;
         }
-        if (!answers.every((ans) => options.includes(ans.trim()))) { // all answers must match from options
-            this.props.addError('options must include all answers');
+        if(answers.length < 1){
+            this.props.addError('please select at least one answer.');
+            return false;    
+        }
+        
+        if (answerType === 'single' && answers.length > 1) {
+            this.props.addError('please enter only one answer for single answer type question.');
             return false;
         }
 
@@ -63,13 +92,11 @@ class NewQuestionPaper extends Component {
         };
 
         this.setState({ //clear question input
-            ...initialState,
             questions: [...this.state.questions, newQuestion],
-            standard: this.state.standard,
-            subject: this.state.subject,
-            totalMarks: this.state.totalMarks,
-            totalQuestions: this.state.totalQuestions,
-            lastDate: this.state.lastDate
+            options: [''],
+            answers: [],
+            question: '',
+            answerType: 'single'
         })
     }
 
@@ -122,12 +149,12 @@ class NewQuestionPaper extends Component {
                     <div className='col-md-8 mx-auto'>
                         <QuestionPaperInfoForm {...this.state} handleQuestionPaperSubmit={this.handleQuestionPaperSubmit} handleChange={this.handleChange}  />
                         <hr/>
-                        <h2 className='text-center my-2'>Add Question:</h2>
-                        <QuestionsForm {...this.state} handleQuestionSubmit={this.handleQuestionSubmit} handleChange={this.handleChange}/>
+                        <h2 className='text-center my-2 h3'> Question {this.state.questions.length + 1}</h2>
+                        <QuestionsForm {...this.state} handleQuestionSubmit={this.handleQuestionSubmit} handleChange={this.handleChange} handleOptionChange={this.handleOptionChange} handleOptionAppend={this.handleOptionAppend} handleOptionRemove={this.handleOptionRemove} handleAnswerChange={this.handleAnswerChange}/>
                     </div>
                 </div>
             </div> :
-            <p className='h2'>Submitting</p>
+            <p className='h2'>Submitting....</p>
         )
     }
 }

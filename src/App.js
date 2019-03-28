@@ -56,8 +56,10 @@ class App extends Component {
     addSuccess = (success) => {
         this.setState({
             success
-        })
+        });
+        setTimeout(this.removeSuccess, 1500);
     }
+    
     removeSuccess = () => {
         this.setState({
             success: ''

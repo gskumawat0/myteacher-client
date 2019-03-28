@@ -48,10 +48,10 @@ const QuestionPaperInfoForm = (props) => {
 }
 
 const QuestionsForm = (props) => {
-    let { totalQuestions, questions, question, options,handleChange, handleOptionChange, handleOptionAppend, handleOptionRemove, handleAnswerChange, handleQuestionSubmit } = props;
-    let optionList = options.map((option,i)=>{
+    let { totalQuestions, questions, question, answers, options, answerType, handleChange, handleOptionChange, handleOptionAppend, handleOptionRemove, handleAnswerChange, handleQuestionSubmit } = props;
+    let optionList = options.map((option, i) => {
         return <div key={i} className='form-row'>
-                    <input type='checkbox' value={option} name='answers' onChange={handleAnswerChange} className='col-1 m-auto'/>
+                    <input type='checkbox' value={option} name='answers' onChange={handleAnswerChange} className='col-1 m-auto' checked={answers.includes(option) && option !== ''}/>
                     <input type='text' name={option[i]} value={option} onChange={handleOptionChange.bind(this, i)} placeholder={`option ${i + 1}`} className=' col-10 form-control  my-1' required/> 
                     <p className='col-1 my-auto' >
                         <span className=' px-2 my-auto' onClick={handleOptionRemove.bind(this, i)}>-</span>
@@ -63,11 +63,11 @@ const QuestionsForm = (props) => {
               <p className='float-right'>Questions remaining: {totalQuestions - questions.length > 0 ? totalQuestions - questions.length : 0} </p>    
               <p className='mb-0 ml-md-2'>Select answer type:</p>
                 <div className="form-check ml-md-4">
-                  <input className="form-check-input" type="radio" name="answerType" id="single" onChange={handleChange} value="single" required/>
+                  <input className="form-check-input" type="radio" name="answerType" id="single" onChange={handleChange} value="single" checked={answerType === 'single'} required/>
                   <label className="form-check-label mr-3" htmlFor="single">
                     single answer type
                   </label>
-                  <input className="form-check-input ml-4" type="radio" name="answerType" onChange={handleChange} id="multiple" value="multiple" required/>
+                  <input className="form-check-input ml-4" type="radio" name="answerType" onChange={handleChange} id="multiple" value="multiple" checked={answerType === 'multiple'} required/>
                   <label className="form-check-label mx-5" htmlFor="multiple">
                     multiple answer type
                   </label>

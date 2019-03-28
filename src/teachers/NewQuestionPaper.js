@@ -4,7 +4,7 @@ import { QuestionsForm, QuestionPaperInfoForm } from './QuestionPaperForms'
 
 
 const initialState = {
-    
+
 }
 class NewQuestionPaper extends Component {
     constructor(props) {
@@ -32,53 +32,56 @@ class NewQuestionPaper extends Component {
             options: newOptions
         });
     }
-    
+
     handleAnswerChange = (e) => {
-        let {answers} = this.state;
-        if(answers.includes(e.target.value)){ //remove pre selected answer
+        let { answers } = this.state;
+        if (answers.includes(e.target.value)) { //remove pre selected answer
             this.setState({
-                answers: answers.filter((answer)=> answer !== e.target.value)
+                answers: answers.filter((answer) => answer !== e.target.value)
             })
         }
-        else{
+        else {
             this.setState({ //add if not selected earlier
                 answers: [...answers, e.target.value]
             });
         }
     }
-    
-    handleOptionAppend = (e)=>{
+
+    handleOptionAppend = (e) => {
         this.setState({
             options: [...this.state.options, '']
         })
     }
-    
-    handleOptionRemove = (idx, e)=>{
-        let {options} = this.state;
-        if(options.length < 2) return false;
+
+    handleOptionRemove = (idx, e) => {
+        let { options } = this.state;
+        if (options.length < 2) return false;
         this.setState({
-            options: options.filter((option, i)=>i !== idx)
+            options: options.filter((option, i) => i !== idx)
         })
     }
-    
-    handleChange = (e) =>{
+
+    handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
+
     handleQuestionSubmit = (e) => {
         e.preventDefault();
         this.props.removeError();
         let { question, answerType, answers, options } = this.state;
-        if(options.length < 2){
+        answers = answers.map(answer => answer.trim());
+        options = options.trim(option => option.trim());
+        if (options.length < 2) {
             this.props.addError('please provide at least 2 options.');
             return false;
         }
-        if(answers.length < 1){
+        if (answers.length < 1) {
             this.props.addError('please select at least one answer.');
-            return false;    
+            return false;
         }
-        
+
         if (answerType === 'single' && answers.length > 1) {
             this.props.addError('please enter only one answer for single answer type question.');
             return false;
@@ -123,7 +126,7 @@ class NewQuestionPaper extends Component {
             })
         }
 
-        apiCall('post', `${process.env.REACT_APP_BASE_URL}/api/questionpapers`, { standard, subject, totalMarks, totalQuestions, questions,assignedTo, lastDate })
+        apiCall('post', `${process.env.REACT_APP_BASE_URL}/api/questionpapers`, { standard, subject, totalMarks, totalQuestions, questions, assignedTo, lastDate })
             .then(data => {
                 this.setState({ ...initialState })
                 this.props.history.push(`/teachers`);

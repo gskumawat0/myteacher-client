@@ -35,7 +35,7 @@ class AuthForm extends Component {
                     password: '',
                     profileType: 'student'
                 })
-                this.props.type === 'signin' ? this.props.history.push(`/${user.profileType}s`) : this.props.addsuccess(message)
+                this.props.type === 'signin' ? this.props.history.push(`/${user.profileType}s`) : this.props.addSuccess(message)
             })
             .catch(err => this.props.addError(err.message || `something went wrong. please try again later.`));
     }
